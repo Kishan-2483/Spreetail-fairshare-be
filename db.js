@@ -1,11 +1,19 @@
 import sqlite3 from 'sqlite3';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const dbPath = process.env.DATABASE_PATH || path.resolve(__dirname, 'splitwise.db');
+
+// Ensure parent directory exists (e.g. creating /data on Render if not pre-created)
+const dbDir = path.dirname(dbPath);
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
+}
+
 const db = new sqlite3.Database(dbPath);
 
 export const query = (sql, params = []) => {
