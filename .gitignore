@@ -1,0 +1,4 @@
+node_modules
+splitwise.db
+splitwise.db-journal
+.env
